@@ -5,17 +5,22 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include "stb_image.h"
 #include "shader.h"
 #include "camera.h"
+#include "generate.h"
 
 void processInput(GLFWwindow* window);
+
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 Camera camera = Camera();
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 bool firstMouse = true;
-float lastX = 800.0f / 2.0;
-float lastY = 600.0 / 2.0;
+float lastX = SCR_WIDTH / 2.0;
+float lastY = SCR_HEIGHT / 2.0;
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 int main(void)
@@ -28,7 +33,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Majnkraft", NULL, NULL);
+    window = glfwCreateWindow(800, 600, "Majnkraft", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -47,7 +52,7 @@ int main(void)
 
     
     //glfwSetCursorPosCallback(window, camera.ProcessMouseMovement);
-
+    glEnable(GL_DEPTH_TEST);
 
     Shader shader = Shader("res/shaders/vertex.glsl", "res/shaders/fragment.glsl");
     
@@ -68,17 +73,17 @@ int main(void)
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
@@ -96,22 +101,42 @@ int main(void)
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
-    unsigned int buff;
-    glGenBuffers(1, &buff);
-    glBindBuffer(GL_ARRAY_BUFFER, buff);
+    glm::vec3 cubePositions[] = {
+        glm::vec3(0.0f,  0.0f,  0.0f),
+        glm::vec3(1.0f,  0.0f,  0.0f),
+        
+    };
+
+    unsigned int VBO, VAO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (const void*)0);
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    // texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
     glm::mat4 projection;
-    projection = glm::perspective(glm::radians(45.0f), 640.0f / 480.0f, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::rotate(model, 0.7f, glm::vec3(0.5f, 1.0f, 0.0f));
+    //model = glm::rotate(model, 0.0f, glm::vec3(0.5f, 1.0f, 0.0f));
     
     
+
+    shader.use();
+    //glUniform1i(glGetUniformLocation(shader.getId(), "ourTexture"), 0);
+
+    Generate gen = Generate();
+    gen.generateWorld();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -126,9 +151,9 @@ int main(void)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+        
         shader.use();
-        shader.setColor("ourColor", 1.0f, 0.0f, 0.0f, 0.0f);
+        //shader.setColor("ourColor", 1.0f, 0.0f, 0.0f, 0.0f);
 
         int modelLoc = glGetUniformLocation(shader.getId(), "model");
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -138,8 +163,13 @@ int main(void)
         int projLoc = glGetUniformLocation(shader.getId(), "projection");
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
         
+        
+        glBindVertexArray(VAO);
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        gen.drawWorld(shader);
+            
+
+
         
 
         /* Swap front and back buffers */
@@ -169,6 +199,10 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(2, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(3, deltaTime);
+    if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.ProcessKeyboard(4, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.ProcessKeyboard(5, deltaTime);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {

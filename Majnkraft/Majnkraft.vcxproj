@@ -151,12 +151,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\block.cpp" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\chunk.cpp" />
+    <ClCompile Include="src\generate.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\block.h" />
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\chunk.h" />
+    <ClInclude Include="src\generate.h" />
     <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.glsl" />

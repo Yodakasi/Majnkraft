@@ -50,12 +50,16 @@ void Camera::ProcessKeyboard(int direction, float deltaTime) {
     float velocity = MovementSpeed * deltaTime;
     if (direction == 0)
         Position += Front * velocity;
-    if (direction == 1)
+    else if (direction == 1)
         Position -= Front * velocity;
-    if (direction == 2)
+    else if (direction == 2)
         Position -= Right * velocity;
-    if (direction == 3)
+    else if (direction == 3)
         Position += Right * velocity;
+    else if (direction == 4)
+        Position += Up * velocity;
+    else if (direction == 5)
+        Position -= Up * velocity;
 }
 
 glm::mat4 Camera::GetViewMatrix()
