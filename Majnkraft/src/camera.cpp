@@ -1,10 +1,12 @@
 #include "camera.h"
 
-
+#include <iostream>
+//delete pls
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) 
     : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY)
 {
+    cameraMoved = true;
     Position = position;
     WorldUp = up;
     Yaw = yaw;
@@ -47,7 +49,16 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
 }
 
 void Camera::ProcessKeyboard(int direction, float deltaTime) {
+    cameraMoved = true;
     float velocity = MovementSpeed * deltaTime;
+    float x=Position.x, y=Position.z;
+    if (x < 0) {
+        x -= 4;
+    }
+    if (y < 0) {
+        y -= 4;
+    }
+    //std::cout << (int)x/4 << " " << (int)y/4 << " " << Position.x << " " << Position.z << std::endl;
     if (direction == 0)
         Position += Front * velocity;
     else if (direction == 1)
@@ -65,4 +76,23 @@ void Camera::ProcessKeyboard(int direction, float deltaTime) {
 glm::mat4 Camera::GetViewMatrix()
 {
     return glm::lookAt(Position, Position + Front, Up);
+}
+
+glm::vec2 Camera::get2dPos() {
+    float x = Position.x, y = Position.z;
+    if (x < 0) {
+        x -= 4;
+    }
+    if (y < 0) {
+        y -= 4;
+    }
+    return glm::vec2((int)x/4, (int)y/4);
+}
+
+bool Camera::getCameraMoved() {
+    if (cameraMoved) {
+        cameraMoved = false;
+        return true;
+    }
+    return false;
 }

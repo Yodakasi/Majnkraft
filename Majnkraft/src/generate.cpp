@@ -31,11 +31,6 @@ bool Generate::loadTexture(std::string path, unsigned int* ptr, unsigned int ind
 
 
 Generate::Generate() {
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            chunks[i][j] = new Chunk();
-        }
-    }
     loadTexture("res/textures/grass_top.jpg", &blockstab[0].top, 0);
     loadTexture("res/textures/grass_side.jpg", &blockstab[0].side1, 1);
     loadTexture("res/textures/grass_side.jpg", &blockstab[0].side2, 2);
@@ -45,30 +40,50 @@ Generate::Generate() {
     loadTexture("res/textures/grass_bot.jpg", &blockstab[1].side1, 5);
     loadTexture("res/textures/grass_bot.jpg", &blockstab[1].side2, 6);
     loadTexture("res/textures/grass_bot.jpg", &blockstab[1].bot, 7);
+    renderDistance = 8;
+    needToGen = true;
 }
 
 Generate::~Generate() {
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            delete chunks[i][j];
+
+}
+
+
+void Generate::generateWorld(glm::vec2 start) {
+    //std::cout << start.x << " " << start.y << std::endl;
+    if (needToGen) {
+        for (int i = -renderDistance - 16; i <= renderDistance + 16; i++) {
+            for (int j = -renderDistance - 16; j <= renderDistance + 16; j++) {
+                glm::vec2 ptr = glm::vec2((start.x * 4.0f) + i, (start.y * 4.0f) + j);
+                auto got = umap.find(ptr);
+                if (got == umap.end()) {
+                    //std::cout << "found " << (start.x * 4.0f) + i << " " << (start.y * 4.0f) + j << std::endl;
+                    std::shared_ptr<Chunk> chunk = std::make_shared<Chunk>();
+                    chunk->initChunk(blockstab, glm::vec3((start.x * 4.0f) + i, 0.0f, (start.y * 4.0f) + j));
+                    chunk->generateChunk();
+                    umap.emplace(ptr, chunk);
+
+                }
+
+
+            }
         }
+        needToGen = false;
     }
 }
 
-void Generate::generateWorld() {
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            chunks[i][j]->initChunk(blockstab, glm::vec3(0.0f+(i*4), 0.0f, 0.0f+(j*4)));
-            chunks[i][j]->generateChunk();
+void Generate::drawWorld(Shader& shader, glm::vec2 start) {
+    for (int i = -renderDistance; i <= renderDistance; i++) {
+        for (int j = -renderDistance; j <= renderDistance; j++) {
+            auto got = umap.find(glm::vec2((start.x * 4.0f) + i, (start.y * 4.0f) + j));
+            if (got != umap.end()) {
+                got->second->drawChunk(shader);
+            }
+            else {
+                needToGen = true;
+            }
         }
     }
-}
 
-void Generate::drawWorld(Shader& shader) {
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 16; j++) {
-            chunks[i][j]->drawChunk(shader);
-        }
-    }
 }
 

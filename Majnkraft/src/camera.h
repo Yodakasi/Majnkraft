@@ -10,7 +10,7 @@
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 2.5f;
+const float SPEED = 5.5f;
 const float SENSITIVITY = 0.01f;
 
 
@@ -27,6 +27,7 @@ private:
     // Camera options
     float MovementSpeed;
     float MouseSensitivity;
+    bool cameraMoved;
 
     void updateCameraVectors();
 
@@ -36,6 +37,7 @@ public:
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessKeyboard(int direction, float deltaTime);
     glm::mat4 GetViewMatrix();
-
+    glm::vec2 get2dPos();
+    bool getCameraMoved();
 };
 

@@ -136,7 +136,7 @@ int main(void)
     //glUniform1i(glGetUniformLocation(shader.getId(), "ourTexture"), 0);
 
     Generate gen = Generate();
-    gen.generateWorld();
+    gen.generateWorld(glm::vec2(0.0f, 0.0f));
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -166,7 +166,10 @@ int main(void)
         
         glBindVertexArray(VAO);
 
-        gen.drawWorld(shader);
+        if(camera.getCameraMoved())
+            gen.generateWorld(camera.get2dPos());
+        gen.drawWorld(shader, camera.get2dPos());
+        
             
 
 

@@ -27,6 +27,7 @@ public:
 	Block() {}
 	void initBlock(unsigned int top, unsigned int side1, unsigned int side2, unsigned int bot, glm::vec3 pos, unsigned int sides);
 	void drawBlock(Shader &shader);
+	bool isVisible();
 
 
 };

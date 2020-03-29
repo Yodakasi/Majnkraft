@@ -13,11 +13,14 @@ class Chunk {
 	blockStruct blockstab[5];
 	glm::vec3 position;
 	Block *blocks[256];
+	unsigned int visibleBlocks;
 public:
 	Chunk();
 	~Chunk();
 	void generateChunk();
-	void initChunk(blockStruct blockss[5], glm::vec3 pos);
+	void initChunk(blockStruct *blockss, glm::vec3 pos);
 	void drawChunk(Shader& shader);
+
+	bool operator ==(const Chunk& obj) const;
 
 };

@@ -9,7 +9,7 @@ void Block::initBlock(unsigned int top, unsigned int side1, unsigned int side2, 
     block.bot = bot;
     position = pos;
     whichSides = sides;
-
+   
 }
 
 void Block::drawBlock(Shader& shader) {
