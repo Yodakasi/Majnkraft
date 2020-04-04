@@ -2,10 +2,15 @@
 
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath) {
-	std::string vertexCode;
-	std::string fragmentCode;
-	std::ifstream vShaderFile;
-	std::ifstream fShaderFile;
+    this->loadShaders(vertexPath, fragmentPath);
+
+}
+
+void Shader::loadShaders(const char* vertexPath, const char* fragmentPath) {
+    std::string vertexCode;
+    std::string fragmentCode;
+    std::ifstream vShaderFile;
+    std::ifstream fShaderFile;
     vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try
@@ -34,7 +39,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     int success;
     char infoLog[512];
 
-    
+
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
@@ -74,8 +79,9 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     // delete the shaders as they're linked into our program now and no longer necessery
     glDeleteShader(vertex);
     glDeleteShader(fragment);
-
 }
+
+
 
 unsigned int Shader::getId() {
     return id;

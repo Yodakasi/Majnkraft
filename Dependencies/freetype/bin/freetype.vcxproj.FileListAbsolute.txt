@@ -1,0 +1,2 @@
+C:\Users\windowsdodupy\Downloads\freetype-2.10.1\freetype-2.10.1\objs\x64\Debug\freetype.lib
+C:\Users\windowsdodupy\Downloads\freetype-2.10.1\freetype-2.10.1\objs\x64\Debug\freetype.pdb

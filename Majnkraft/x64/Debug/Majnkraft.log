@@ -1,2 +1,15 @@
-﻿  generate.cpp
+﻿  Application.cpp
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\Application.cpp(110,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\Application.cpp(111,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\Application.cpp(115,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\Application.cpp(116,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\Application.cpp(117,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\Application.cpp(118,13): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  game.cpp
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\game.cpp(23,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\game.cpp(24,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\game.cpp(55,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\windowsdodupy\source\repos\Majnkraft\Majnkraft\src\game.cpp(81,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  generate.cpp
+  Generating Code...
   Majnkraft.vcxproj -> C:\Users\windowsdodupy\source\repos\Majnkraft\x64\Debug\Majnkraft.exe

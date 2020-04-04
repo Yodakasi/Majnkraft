@@ -1,5 +1,7 @@
 #pragma once
 
+
+#include "noise.h"
 #include "block.h"
 
 struct blockStruct {
@@ -12,15 +14,17 @@ struct blockStruct {
 class Chunk {
 	blockStruct blockstab[5];
 	glm::vec3 position;
-	Block *blocks[256];
+	Block *blocks[128];
 	unsigned int visibleBlocks;
+	
+	
 public:
 	Chunk();
 	~Chunk();
-	void generateChunk();
+	void generateChunk(Noise &noisy);
 	void initChunk(blockStruct *blockss, glm::vec3 pos);
 	void drawChunk(Shader& shader);
+	
 
-	bool operator ==(const Chunk& obj) const;
 
 };

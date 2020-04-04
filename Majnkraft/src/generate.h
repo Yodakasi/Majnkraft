@@ -8,6 +8,7 @@
 #include <memory>
 
 
+
 #include "stb_image.h"
 #include "shader.h"
 #include "chunk.h"
@@ -34,7 +35,6 @@ class Generate {
 	blockStruct blockstab[5];
 
 	bool loadTexture(std::string path, unsigned int* ptr, unsigned int index);
-	Chunk *chunks[256][256];
 	std::unordered_map<glm::vec2, std::shared_ptr<Chunk>, hash> umap;
 	int renderDistance;
 	bool needToGen;
@@ -42,7 +42,9 @@ class Generate {
 public:
 	Generate();
 	~Generate();
-	void generateWorld(glm::vec2 start);
+	void init(int redDis);
+	void generateWorld(glm::vec2 start, Noise &noisy);
 	void drawWorld(Shader& shader, glm::vec2 pos);
+	
 	
 };

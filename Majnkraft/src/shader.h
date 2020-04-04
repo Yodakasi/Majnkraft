@@ -20,7 +20,7 @@ public:
 	Shader(const char *vertexPath, const char *fragmentPath);
 	//~Shader();
 	unsigned int getId();
-
+	void loadShaders(const char* vertexPath, const char* fragmentPath);
 	void use();
 
 	void setBool(const std::string& name, bool value) const;

@@ -2,37 +2,78 @@
 
 
 Chunk::Chunk() {
-    for (int i = 0; i < 256; i++) {
+    //gen = new noise::module::Perlin();
+    for (int i = 0; i < 128; i++) {
         blocks[i] = new Block();
     }
 }
 
 Chunk::~Chunk() {
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 128; i++) {
         delete blocks[i];
     }
 
 }
-void Chunk::generateChunk() {
+void Chunk::generateChunk(Noise &noisy) {
     int index = 0;
-    visibleBlocks = 16;
-    for (float i = 0; i < 16; i++) {
-        for (float j = 0; j < 4; j++) {
-            for (float g = 0; g < 4; g++) {
-                glm::vec3 pos = glm::vec3(position.x + j, position.y - i, position.z + g);
-                //std::cout << pos.x << std::endl;
+        for (double j = 0; j < 4; j++) {
+            for (double g = 0; g < 4; g++) { 
+                double wtf = noisy.noiseFun((double)position.x + j, (double)position.z + g);
+                double height = -round(wtf * 64);
 
-                if (i == 0) {
-                    blocks[index]->initBlock(blockstab[0].top, blockstab[0].side1, blockstab[0].side2, blockstab[0].bot, pos, 1);
+                glm::vec3 pos = glm::vec3(position.x + j, height, position.z + g);
+                int sides = 1;
+                
+                double heightBeforeY = -round(noisy.noiseFun((double)position.x + j, (double)position.z + g - 1) * 64);
+                if (heightBeforeY < height) {
+                    sides += 2;
                 }
-                else {
-                    blocks[index]->initBlock(blockstab[1].top, blockstab[1].side1, blockstab[1].side2, blockstab[1].bot, pos, 0);
+                if (height - heightBeforeY > 1) {
+                    for (int i = 0; i < height - heightBeforeY; i++) {
+                        blocks[index]->initBlock(blockstab[0].top, blockstab[0].side1, blockstab[0].side2, blockstab[0].bot, glm::vec3(pos.x, pos.y-i-1, pos.z), 2);
+                        index++;
+                    }
                 }
-                //std::cout << index << st d::endl;
+                double heightAfterY = -round(noisy.noiseFun((double)position.x + j, (double)position.z + g + 1) * 64);
+                if (heightAfterY < height) {
+                    sides += 4;
+                }
+                if (height - heightAfterY > 1) {
+                    for (int i = 0; i < height - heightAfterY; i++) {
+                        blocks[index]->initBlock(blockstab[1].top, blockstab[1].side1, blockstab[1].side2, blockstab[1].bot, glm::vec3(pos.x, pos.y - i - 1, pos.z), 4);
+                        index++;
+                    }
+                }
+                
+                double heightBeforeX = -round(noisy.noiseFun((double)position.x + j - 1, (double)position.z + g) * 64);
+                if (heightBeforeX < height) {
+                    sides += 8;
+                }
+                if (height - heightBeforeX > 1) {
+                    for (int i = 0; i < height - heightBeforeX; i++) {
+                        blocks[index]->initBlock(blockstab[1].top, blockstab[1].side1, blockstab[1].side2, blockstab[1].bot, glm::vec3(pos.x, pos.y - i - 1, pos.z), 8);
+                        index++;
+                    }
+                }
+                double heightAfterX = -round(noisy.noiseFun((double)position.x + j + 1, (double)position.z + g) * 64);
+                if (heightAfterX < height) {
+                    sides += 16;
+                }
+                if (height - heightAfterX > 1) {
+                    for (int i = 0; i < height - heightAfterX; i++) {
+                        blocks[index]->initBlock(blockstab[1].top, blockstab[1].side1, blockstab[1].side2, blockstab[1].bot, glm::vec3(pos.x, pos.y - i - 1, pos.z), 16);
+                        index++;
+                    }
+                }
+                
+                 blocks[index]->initBlock(blockstab[0].top, blockstab[0].side1, blockstab[0].side2, blockstab[0].bot, pos, sides);
+              
+                
                 index++;
             }
         }
-    }
+        visibleBlocks = index;
+    //}
 }
 
 void Chunk::initChunk(blockStruct *blockss, glm::vec3 pos) {
@@ -56,10 +97,7 @@ void Chunk::drawChunk(Shader& shader) {
 
 
 
-bool Chunk::operator ==(const Chunk& obj) const
-{
-    if (position == obj.position)
-        return true;
-    else
-        return false;
-}
+
+
+
+

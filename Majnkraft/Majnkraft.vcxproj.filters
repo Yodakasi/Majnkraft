@@ -36,6 +36,15 @@
     <ClCompile Include="src\chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\noise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\shader.h">
@@ -56,9 +65,20 @@
     <ClInclude Include="src\generate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\noise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\fragment.glsl" />
-    <None Include="res\shaders\vertex.glsl" />
+    <None Include="res\shaders\vertex.vs" />
+    <None Include="res\shaders\fragment.fs" />
+    <None Include="res\shaders\menu.fs" />
+    <None Include="res\shaders\menu.vs" />
   </ItemGroup>
 </Project>

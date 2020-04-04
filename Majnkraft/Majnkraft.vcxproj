@@ -102,13 +102,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm_inc;$(SolutionDir)Dependencies\GLWF\include;$(SolutionDir)Dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm_inc;$(SolutionDir)Dependencies\GLWF\include;$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)Dependencies\perlin\include;$(SolutionDir)Dependencies\freetype\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLWF\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLWF\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64;$(SolutionDir)Dependencies\perlin\bin;$(SolutionDir)Dependencies\freetype\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;User32.lib;Gdi32.lib;Shell32.lib;libnoise.lib;freetype.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,15 +138,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm_inc;$(SolutionDir)Dependencies\GLWF\include;$(SolutionDir)Dependencies\glew-2.1.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm_inc;$(SolutionDir)Dependencies\GLWF\include;$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)Dependencies\perlin\include;$(SolutionDir)Dependencies\freetype\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLWF\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;User32.lib;Gdi32.lib;Shell32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLWF\lib-vc2019;$(SolutionDir)Dependencies\glew-2.1.0\lib\Release\x64;$(SolutionDir)Dependencies\perlin\bin;$(SolutionDir)Dependencies\freetype\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;User32.lib;Gdi32.lib;Shell32.lib;libnoise.lib;freetype.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -154,7 +154,10 @@
     <ClCompile Include="src\block.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\chunk.cpp" />
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\generate.cpp" />
+    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\noise.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
   </ItemGroup>
@@ -162,13 +165,18 @@
     <ClInclude Include="src\block.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\chunk.h" />
+    <ClInclude Include="src\game.h" />
     <ClInclude Include="src\generate.h" />
+    <ClInclude Include="src\menu.h" />
+    <ClInclude Include="src\noise.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\fragment.glsl" />
-    <None Include="res\shaders\vertex.glsl" />
+    <None Include="res\shaders\fragment.fs" />
+    <None Include="res\shaders\menu.fs" />
+    <None Include="res\shaders\menu.vs" />
+    <None Include="res\shaders\vertex.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

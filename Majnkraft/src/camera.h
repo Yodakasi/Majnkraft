@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,7 +10,7 @@
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 5.5f;
-const float SENSITIVITY = 0.01f;
+const float SENSITIVITY = 0.02f;
 
 
 class Camera {
@@ -32,12 +31,13 @@ private:
     void updateCameraVectors();
 
 public:
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+    Camera(glm::vec3 position = glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessKeyboard(int direction, float deltaTime);
     glm::mat4 GetViewMatrix();
     glm::vec2 get2dPos();
+    void CameraSetPos(glm::vec3 position);
     bool getCameraMoved();
 };
 

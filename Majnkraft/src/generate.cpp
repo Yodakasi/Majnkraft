@@ -31,6 +31,15 @@ bool Generate::loadTexture(std::string path, unsigned int* ptr, unsigned int ind
 
 
 Generate::Generate() {
+    
+    
+}
+
+Generate::~Generate() {
+
+}
+
+void Generate::init(int redDis) {
     loadTexture("res/textures/grass_top.jpg", &blockstab[0].top, 0);
     loadTexture("res/textures/grass_side.jpg", &blockstab[0].side1, 1);
     loadTexture("res/textures/grass_side.jpg", &blockstab[0].side2, 2);
@@ -40,27 +49,22 @@ Generate::Generate() {
     loadTexture("res/textures/grass_bot.jpg", &blockstab[1].side1, 5);
     loadTexture("res/textures/grass_bot.jpg", &blockstab[1].side2, 6);
     loadTexture("res/textures/grass_bot.jpg", &blockstab[1].bot, 7);
-    renderDistance = 8;
+
+    renderDistance = redDis;
     needToGen = true;
 }
 
-Generate::~Generate() {
 
-}
-
-
-void Generate::generateWorld(glm::vec2 start) {
-    //std::cout << start.x << " " << start.y << std::endl;
+void Generate::generateWorld(glm::vec2 start, Noise &noisy) {
     if (needToGen) {
-        for (int i = -renderDistance - 16; i <= renderDistance + 16; i++) {
-            for (int j = -renderDistance - 16; j <= renderDistance + 16; j++) {
+        for (int i = -48; i <= 48; i++) {
+            for (int j = -48; j <= 48; j++) {
                 glm::vec2 ptr = glm::vec2((start.x * 4.0f) + i, (start.y * 4.0f) + j);
                 auto got = umap.find(ptr);
                 if (got == umap.end()) {
-                    //std::cout << "found " << (start.x * 4.0f) + i << " " << (start.y * 4.0f) + j << std::endl;
                     std::shared_ptr<Chunk> chunk = std::make_shared<Chunk>();
                     chunk->initChunk(blockstab, glm::vec3((start.x * 4.0f) + i, 0.0f, (start.y * 4.0f) + j));
-                    chunk->generateChunk();
+                    chunk->generateChunk(noisy);
                     umap.emplace(ptr, chunk);
 
                 }
@@ -75,6 +79,7 @@ void Generate::generateWorld(glm::vec2 start) {
 void Generate::drawWorld(Shader& shader, glm::vec2 start) {
     for (int i = -renderDistance; i <= renderDistance; i++) {
         for (int j = -renderDistance; j <= renderDistance; j++) {
+            
             auto got = umap.find(glm::vec2((start.x * 4.0f) + i, (start.y * 4.0f) + j));
             if (got != umap.end()) {
                 got->second->drawChunk(shader);
